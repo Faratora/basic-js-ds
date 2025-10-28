@@ -45,13 +45,19 @@ class BinarySearchTree {
 
   find(data) {
     let currentNode = this.$root;
+
     while (currentNode) {
-      if (data === currentNode.data) return currentNode;
-      currentNode = data < currentNode.data ? currentNode.left : current.right;
+      if (data === currentNode.data) {
+        return currentNode;
+      }
+      if (data < currentNode.data) {
+        currentNode = currentNode.left;
+      } else {
+        currentNode = currentNode.right;
+      }
     }
     return null;
   }
-
   remove(data) {
     this.$root = removeNode(this.$root, data);
 
@@ -61,14 +67,13 @@ class BinarySearchTree {
       if (data < node.data) {
         node.left = removeNode(node.left, data);
         return node;
-      } else if (data > node.data) {
+      } else if (node.data < data) {
         node.right = removeNode(node.right, data);
         return node;
       } else {
-        
         if (!node.left && !node.right) return null;
-        if (!node.left) return node.right;
-        if (!node.right) return node.left;
+        if (!node.left) return (node = node.right);
+        if (!node.right) return (node = node.left);
 
         let minRight = node.right;
         while (minRight.left) {
@@ -82,7 +87,7 @@ class BinarySearchTree {
   }
 
   min() {
-    if (!this.$root) return null;
+    if (!this.$root) return;
     let currentNod = this.$root;
     while (currentNod.left) {
       currentNod = currentNod.left;
@@ -91,9 +96,9 @@ class BinarySearchTree {
   }
 
   max() {
-    if (!this.$root) return null;
     let currentNod = this.$root;
-    while (currentNod.right) {
+    if (!currentNod) return;
+      while (currentNod.right) {
       currentNod = currentNod.right;
     }
     return currentNod.data;
